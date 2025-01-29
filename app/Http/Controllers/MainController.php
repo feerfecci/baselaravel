@@ -10,10 +10,10 @@ class MainController extends Controller
 {
     public function index()
     {
-        echo "estou dentro";
+        return response()->json(['session' => session('user')]);
     }
 
     public function newGasto() {
-        echo 'adicionando gasto';
+        return response()->json(['session' => session('user')]);
     }
 }

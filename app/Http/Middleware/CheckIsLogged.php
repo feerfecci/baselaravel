@@ -19,7 +19,7 @@ class CheckIsLogged
             return response()->json([
                 session('user')
 
-            ]);;
+            ]);
         } else {
 
             return $next($request);

@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 
 
 // });
-Route::post('/login', [AuthController::class, 'login']);
+Route::get('/login', [AuthController::class, 'login']);
 
 Route::middleware([CheckIsLogged::class])->group(function () {
     Route::get('/', [MainController::class, 'index']);
-    Route::get('/newGasto', [MainController::class, 'newGasto']);
+    Route::get('/newgasto', [MainController::class, 'newGasto']);
     Route::get('/logout', [AuthController::class, 'logout']);
 });
 // await fetch("http://192.168.15.117/api/teste", {
