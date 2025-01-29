@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Note;
+use App\Models\Gasto;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    
-    public function testeApi() {
-        $var = Note::all();
-        return response()->json(["teste" => $var]);
+    public function index()
+    {
+        echo "estou dentro";
+    }
+
+    public function newGasto() {
+        echo 'adicionando gasto';
     }
 }
