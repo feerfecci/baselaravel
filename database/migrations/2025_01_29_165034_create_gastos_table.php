@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('gastos', function (Blueprint $table) {
             $table->id()->autoIncrement();
+            $table->integer('id_user', 100);
             $table->string('descricao', 50)->nullable();
             $table->dateTime('data')->nullable();
             $table->string('tipo', 50)->nullable();

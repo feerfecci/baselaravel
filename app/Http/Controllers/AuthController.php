@@ -10,20 +10,16 @@ class AuthController extends Controller
     //
     public function login(Request $request)
     {
-        // $request->validate([
-        //     'text_username' => 'required',
-        //     'text_password' => 'required',
-        // ], );
-
         $username = $request->username;
         $password = $request->password;
 
         $user = User::where('username', $username)->where('deleted_at', NULL)->first();
 
-
+        // dd($request->username);
         if (!$user) {
             return response()->json([
                 'data' => null,
+                'user' => $request->username,
                 'mensagem' => 'Usuario não encontrado',
             ]);
         }
@@ -37,13 +33,12 @@ class AuthController extends Controller
         $user->last_login = date('Y-m-d H:i:s');
         $user->save();
 
-        session([
-            'user' => [
-                'id' => $user->id,
-                'username' => $user->username,
-            ]
+        $this->userId = $user->id;
+        // dd(session('user'));
+        return response()->json([
+            'data' => $user,
+            'mensagem' => 'Usuario encontrado', 
         ]);
-        return response()->json(['data' => $user, 'mensagem' => 'Usuario encontrado', 'session' => session('user')]);
         // $user = User::all()->toArray();
 
         // return response()->json($user);
@@ -52,6 +47,6 @@ class AuthController extends Controller
     public function logout()
     {
         session()->forget('user');
-        return response()->json(['data' => null, 'mensagem' => 'Usuario desconectado', 'session' => session('user')]);
+        return response()->json(['data' => null, 'mensagem' => 'Usuario desconectado', 'idlogado' => $this->userId]);
     }
 }
