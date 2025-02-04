@@ -12,6 +12,8 @@ class AuthController extends Controller
     {
         $username = $request->username;
         $password = $request->password;
+        $logado = $request->logado;
+
 
         $user = User::where('username', $username)->where('deleted_at', NULL)->first();
 
@@ -26,13 +28,23 @@ class AuthController extends Controller
                 'mensagem' => 'Usuario não encontrado',
             ]);
         }
-        if (!password_verify($password, $user->password)) {
-            return response()->json([
-                'data' => null,
-                'mensagem' => 'Senha incorreta',
-            ]);
-        }
+        if ($logado) {
+            //se estiver logado preciso comparar a senha criptografada que foi salva
+            if ($password != $user->password) {
+                return response()->json([
+                    'data' => null,
+                    'mensagem' => 'Senha incorreta',
+                ]);
+            }
+        } else {
 
+            if (!password_verify($password, $user->password)) {
+                return response()->json([
+                    'data' => null,
+                    'mensagem' => 'Senha incorreta',
+                ]);
+            }
+        }
         $user->last_login = date('Y-m-d H:i:s');
         $user->save();
 
@@ -40,7 +52,7 @@ class AuthController extends Controller
         // dd(session('user'));
         return response()->json([
             'data' => $user,
-            'mensagem' => 'Usuario encontrado', 
+            'mensagem' => 'Usuario encontrado',
         ]);
         // $user = User::all()->toArray();
 
