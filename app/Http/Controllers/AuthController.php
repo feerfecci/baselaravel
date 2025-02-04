@@ -15,7 +15,10 @@ class AuthController extends Controller
 
         $user = User::where('username', $username)->where('deleted_at', NULL)->first();
 
-        // dd($request->username);
+        // return response()->json([
+        //     'data' => $request->username,
+        //     'mensagem' => 'Usuario encontrado', 
+        // ]);
         if (!$user) {
             return response()->json([
                 'data' => null,
