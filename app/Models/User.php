@@ -10,6 +10,6 @@ class User extends Model
         return $this->hasMany(Gasto::class);
     }
     public function entradas() {
-        return $this->hasMany(Entrada::class)
+        return $this->hasMany(Entrada::class);
     }
 }

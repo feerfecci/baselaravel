@@ -6,8 +6,8 @@ use App\Models\Entrada;
 use App\Models\Gasto;
 use App\Models\User;
 use App\Services\Operations;
-use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller
 {
@@ -29,7 +29,7 @@ class MainController extends Controller
         ]);
         return response()->json([
             'success' => true,
-            'message' => 'Gasto adicionado com sucesso!',
+            'mensagem' => 'Gasto adicionado com sucesso!',
         ]);
     }
 
@@ -37,6 +37,13 @@ class MainController extends Controller
     {
 
         // dd($idlogado);
+        if ($idlogado == null) {
+            return response()->json([
+                'data' => null,
+                'mensagem' => 'Informe o id user'
+            ]);
+        }
+
         $user = User::find($idlogado)->toArray();
         $gastos = User::find($idlogado)->gastos()->get()->toArray();
         // $gastos = User::with('gastos')->get();
@@ -46,7 +53,6 @@ class MainController extends Controller
             'user' => $user,
             'mensagem' => 'gastos encontrado'
         ]);
-
     }
 
     public function addEntrada(Request $request)
@@ -71,18 +77,18 @@ class MainController extends Controller
             if ($inserted) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Entrada adicionado com sucesso!',
+                    'mensagem' => 'Entrada adicionado com sucesso!',
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Erro ao adicionar gasto.',
+                    'mensagem' => 'Erro ao adicionar gasto.',
                 ], 500); // Código de erro do servidor
             }
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Erro: ' . $e->getMessage(),
+                'mensagem' => 'Erro: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -100,15 +106,12 @@ class MainController extends Controller
                     'data' => $entrada,
                     'mensagem' => 'vamos ver o que róla',
                 ]);
-
             } else {
                 return response()->json([
                     'data' => null,
                     'mensagem' => 'Entrada não deletada',
                 ]);
-
             }
         }
-
     }
 }
