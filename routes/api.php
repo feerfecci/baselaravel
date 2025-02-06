@@ -16,10 +16,18 @@ use Illuminate\Support\Facades\Route;
     Route::post('/login', [AuthController::class, 'login']);
 
 // Route::middleware([CheckIsLogged::class])->group(function () {
+
     Route::get('/home', [MainController::class, 'index']);
     Route::get('/newgasto', [MainController::class, 'newGasto']);
     Route::get('/allgastos/{idlogado}', [MainController::class, 'allGastos']);
+    Route::post('/add-entrada', [MainController::class, 'addEntrada']);
+    Route::get('/delete-entrada/{identrada}', [MainController::class, 'deleteEntrada']);
+    
+    
+    
+    
     Route::get('/logout', [AuthController::class, 'logout']);
+
 // });
 // await fetch("http://192.168.15.117/api/teste", {
 //     method: 'get',

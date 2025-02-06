@@ -9,4 +9,7 @@ class User extends Model
     public function gastos(){
         return $this->hasMany(Gasto::class);
     }
+    public function entradas() {
+        return $this->hasMany(Entrada::class)
+    }
 }
