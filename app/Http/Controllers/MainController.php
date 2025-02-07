@@ -6,8 +6,8 @@ use App\Models\Entrada;
 use App\Models\Gasto;
 use App\Models\User;
 use App\Services\Operations;
-use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller
 {
@@ -37,6 +37,13 @@ class MainController extends Controller
     {
 
         // dd($idlogado);
+        if ($idlogado == null) {
+            return response()->json([
+                'data' => null,
+                'mensagem' => 'Informe o id user'
+            ]);
+        }
+
         $user = User::find($idlogado)->toArray();
         $gastos = User::find($idlogado)->gastos()->get()->toArray();
         // $gastos = User::with('gastos')->get();
@@ -46,7 +53,6 @@ class MainController extends Controller
             'user' => $user,
             'mensagem' => 'gastos encontrado'
         ]);
-
     }
 
     public function addEntrada(Request $request)
@@ -70,18 +76,18 @@ class MainController extends Controller
                 ]);
             if ($inserted) {
                 return response()->json([
-                    'data' => $inserted,
+                    'success' => true,
                     'mensagem' => 'Entrada adicionado com sucesso!',
                 ]);
             } else {
                 return response()->json([
-                    'data' => null,
+                    'success' => false,
                     'mensagem' => 'Erro ao adicionar gasto.',
                 ], 500); // Código de erro do servidor
             }
         } catch (\Exception $e) {
             return response()->json([
-                'data' => null,
+                'success' => false,
                 'mensagem' => 'Erro: ' . $e->getMessage(),
             ], 500);
         }
@@ -100,41 +106,12 @@ class MainController extends Controller
                     'data' => $entrada,
                     'mensagem' => 'Entrada deletada com sucesso!',
                 ]);
-
             } else {
                 return response()->json([
                     'data' => null,
                     'mensagem' => 'Entrada não deletada!',
                 ]);
-
             }
         }
-
     }
-
-    public function allEntradas($userid)
-    {
-        $entradas = User::find($userid)->entradas()->whereNull('deleted_at')->get()->toArray();
-
-        $totalEntradas = 0;
-
-        foreach ($entradas as $entrada) {
-            $totalEntradas += $entrada['valor'];
-        }
-
-        if ($entradas) {
-            return response()->json([
-                'data' => $entradas,
-                'total' => $totalEntradas,
-                'mensagem' => "Entradas acessadas sucesso!",
-            ]);
-        } else {
-            return response()->json([
-                'data' => null,
-                'mensagem' => "Entradas não encontradas!",
-            ]);
-
-        }
-    }
-
 }
