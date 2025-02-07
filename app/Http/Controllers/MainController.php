@@ -29,7 +29,7 @@ class MainController extends Controller
         ]);
         return response()->json([
             'success' => true,
-            'message' => 'Gasto adicionado com sucesso!',
+            'mensagem' => 'Gasto adicionado com sucesso!',
         ]);
     }
 
@@ -70,19 +70,19 @@ class MainController extends Controller
                 ]);
             if ($inserted) {
                 return response()->json([
-                    'success' => true,
-                    'message' => 'Entrada adicionado com sucesso!',
+                    'data' => $inserted,
+                    'mensagem' => 'Entrada adicionado com sucesso!',
                 ]);
             } else {
                 return response()->json([
-                    'success' => false,
-                    'message' => 'Erro ao adicionar gasto.',
+                    'data' => null,
+                    'mensagem' => 'Erro ao adicionar gasto.',
                 ], 500); // Código de erro do servidor
             }
         } catch (\Exception $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Erro: ' . $e->getMessage(),
+                'data' => null,
+                'mensagem' => 'Erro: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -98,17 +98,43 @@ class MainController extends Controller
 
                 return response()->json([
                     'data' => $entrada,
-                    'mensagem' => 'vamos ver o que róla',
+                    'mensagem' => 'Entrada deletada com sucesso!',
                 ]);
 
             } else {
                 return response()->json([
                     'data' => null,
-                    'mensagem' => 'Entrada não deletada',
+                    'mensagem' => 'Entrada não deletada!',
                 ]);
 
             }
         }
 
     }
+
+    public function allEntradas($userid)
+    {
+        $entradas = User::find($userid)->entradas()->whereNull('deleted_at')->get()->toArray();
+
+        $totalEntradas = 0;
+
+        foreach ($entradas as $entrada) {
+            $totalEntradas += $entrada['valor'];
+        }
+
+        if ($entradas) {
+            return response()->json([
+                'data' => $entradas,
+                'total' => $totalEntradas,
+                'mensagem' => "Entradas acessadas sucesso!",
+            ]);
+        } else {
+            return response()->json([
+                'data' => null,
+                'mensagem' => "Entradas não encontradas!",
+            ]);
+
+        }
+    }
+
 }

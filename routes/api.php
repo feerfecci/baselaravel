@@ -21,7 +21,8 @@ use Illuminate\Support\Facades\Route;
     Route::get('/newgasto', [MainController::class, 'newGasto']);
     Route::get('/allgastos/{idlogado}', [MainController::class, 'allGastos']);
     Route::post('/add-entrada', [MainController::class, 'addEntrada']);
-    Route::get('/delete-entrada/{identrada}', [MainController::class, 'deleteEntrada']);
+    Route::post('/delete-entrada/{identrada}', [MainController::class, 'deleteEntrada']);
+    Route::get('/all-entradas/{userid}', [MainController::class, 'allEntradas']);
     
     
     

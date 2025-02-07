@@ -14,7 +14,6 @@ class AuthController extends Controller
         $password = $request->password;
         $logado = $request->logado;
 
-
         $user = User::where('username', $username)->where('deleted_at', NULL)->first();
 
         // return response()->json([
