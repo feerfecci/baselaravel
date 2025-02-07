@@ -114,4 +114,39 @@ class MainController extends Controller
             }
         }
     }
+
+    public function allEntradas($userid)
+    {
+        try {
+            $entradas = User::find($userid)->entradas()->whereNull('deleted_at')->get()->toArray();
+
+            if ($entradas) {
+
+                $totalEntradas = 0;
+
+                foreach ($entradas as $entrada) {
+                    $totalEntradas += $entrada['valor'];
+                }
+
+
+                return response()->json([
+                    'data' => $entradas,
+                    'total' => $totalEntradas,
+                    'mensagem' => "Entradas acessadas sucesso!",
+                ]);
+            } else {
+                return response()->json([
+                    'data' => null,
+                    'mensagem' => "Entradas não encontradas!",
+                ]);
+
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'data' => null,
+                'mensagem' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
